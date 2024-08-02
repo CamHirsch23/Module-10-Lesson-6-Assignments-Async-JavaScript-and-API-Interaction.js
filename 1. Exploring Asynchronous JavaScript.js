@@ -1,8 +1,6 @@
 // Task 1: Obtaining API Key and Configuration
 const publicKey = 'YOUR_PUBLIC_API_KEY'; // Replace with your actual public API key
 const privateKey = 'YOUR_PRIVATE_API_KEY'; // Replace with your actual private API key
-const ts = Date.now(); // Timestamp for the request
-const hash = md5(ts + privateKey + publicKey); // Hash parameter for authentication
 
 // Task 2: Fetching Characters Using Fetch API
 async function fetchMarvelCharacters() {
