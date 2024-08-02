@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marvel Characters</title>
+</head>
+<body>
+  <div id="characters"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+  <script>
+    // Task 1: Obtaining API Key and Configuration
+    const publicKey = 'YOUR_PUBLIC_API_KEY'; // Replace with your actual public API key
+    const privateKey = 'YOUR_PRIVATE_API_KEY'; // Replace with your actual private API key
+
+    // Task 2: Fetching Characters Using Fetch API
+    async function fetchMarvelCharacters() {
+      const ts = Date.now(); // Timestamp for the request
+      const hash = md5(ts + privateKey + publicKey); // Hash parameter for authentication
+      const url = `https://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=${hash}`; // API endpoint URL
+
+      try {
+        const response = await fetch(url); // Fetch data from the API
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json(); // Parse the JSON response
+        return data.data.results; // Return the character data
+      } catch (error) {
+        console.error('Fetching Marvel characters failed:', error); // Log any errors
+        return null;
+      }
+    }
+
+    // Task 3: Updating User Interface Dynamically
+    async function updateUIWithMarvelCharacters() {
+      const characters = await fetchMarvelCharacters(); // Fetch characters
+      const charactersDiv = document.getElementById('characters'); // Get the characters div
+      charactersDiv.innerHTML = ''; // Clear the div before adding new content
+
+      if (characters) {
+        characters.forEach(character => {
+          const characterElement = createCharacterDiv(character); // Create a div for each character
+          charactersDiv.appendChild(characterElement); // Append the character div to the characters div
+        });
+      } else {
+        charactersDiv.textContent = 'Failed to fetch characters.'; // Display an error message if characters could not be fetched
+      }
+    }
+
+    // Helper function to create a character div
+    function createCharacterDiv(character) {
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <h3>${character.name}</h3>
+        <img src="${character.thumbnail.path}.${character.thumbnail.extension}" alt="${character.name}">
+      `;
+      return div;
+    }
+
+    // Call updateUIWithMarvelCharacters immediately, then every 5 seconds
+    updateUIWithMarvelCharacters();
+    setInterval(updateUIWithMarvelCharacters, 5000);
+  </script>
+</body>
+</html>
