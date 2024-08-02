@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer and Notifications</title>
+</head>
+<body>
+  <h1>Countdown Timer and Notifications</h1>
+  <div id="characters"></div>
+  <button onclick="startCountdown(60)">Start 60-second Countdown</button>
+  <button onclick="delayedNotification('This is a delayed notification!', 3000)">Show Delayed Notification</button>
+  <button onclick="repeatNotification('This notification repeats every 5 seconds!', 5000)">Show Repeated Notification</button>
+
+  <script>
+    // Task 1: Countdown Timer
+    function startCountdown(durationInSeconds) {
+        let remainingTime = durationInSeconds;
+
+        let countdownInterval = setInterval(() => {
+            if (remainingTime <= 0) {
+                clearInterval(countdownInterval);
+                alert('Countdown timer has expired!');
+            } else {
+                console.log(remainingTime);
+                remainingTime--;
+            }
+        }, 1000); // Update every second
+    }
+
+    // Task 2: Delayed Notification
+    function delayedNotification(message, delayInMilliseconds) {
+        setTimeout(() => {
+            alert(message);
+        }, delayInMilliseconds);
+    }
+
+    // Task 3: Repeat Notification
+    function repeatNotification(message, intervalInMilliseconds) {
+        let repeatInterval = setInterval(() => {
+            alert(message);
+        }, intervalInMilliseconds);
+
+        // Example: Dismiss after 10 seconds
+        setTimeout(() => {
+            clearInterval(repeatInterval);
+        }, 10000);
+    }
+
+    // Example Usage
+    startCountdown(60); // Start a 60-second countdown
+    delayedNotification('This is a delayed notification!', 3000); // Display a notification after 3 seconds
+    repeatNotification('This notification repeats every 5 seconds!', 5000); // Display a notification every 5 seconds
+  </script>
+</body>
+</html>
